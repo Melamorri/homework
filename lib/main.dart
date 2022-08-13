@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:week9/pages/greeting_page.dart';
 import 'package:week9/pages/login_page.dart';
 import 'package:week9/pages/registration_page.dart';
@@ -16,8 +17,8 @@ Future<void> main() async {
 
 class LoginApp extends StatelessWidget {
   final String initialRoute;
-  Color _primaryColor = HexColor('#cfd8dc');
-  Color _accentColor = HexColor('#455a64');
+  final Color _primaryColor = HexColor('#cfd8dc');
+  final Color _accentColor = HexColor('#455a64');
 
   LoginApp({
     Key? key,
@@ -26,20 +27,23 @@ class LoginApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Login App',
-      theme: ThemeData(
-          scaffoldBackgroundColor: Colors.grey.shade100,
-          primaryColor: _primaryColor,
-          primarySwatch: Colors.grey,
-          colorScheme:
-              ColorScheme.fromSwatch().copyWith(secondary: _accentColor)),
-      initialRoute: initialRoute,
-      routes: {
-        '/login': (_) => LoginPage(),
-        '/sign_up': (_) => RegistrationPage(),
-        '/home': (_) => GreetingPage(username: ''),
-      },
+    return ResponsiveSizer(builder: (context, orientation, deviceType) {
+      return MaterialApp(
+        title: 'Flutter Login App',
+        theme: ThemeData(
+            scaffoldBackgroundColor: Colors.grey.shade100,
+            primaryColor: _primaryColor,
+            primarySwatch: Colors.grey,
+            colorScheme:
+            ColorScheme.fromSwatch().copyWith(secondary: _accentColor)),
+        initialRoute: initialRoute,
+        routes: {
+          '/login': (_) => LoginPage(),
+          '/sign_up': (_) => RegistrationPage(),
+          '/home': (_) => GreetingPage(username: ''),
+        },
+      );
+    },
     );
   }
 }

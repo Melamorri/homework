@@ -1,5 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:week9/pages/widgets/header_widget.dart';
 import '../shared_prefs/session_manager.dart';
 import '../shared_prefs/user.dart';
@@ -19,6 +21,8 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   final _userRepository = UserRepository();
   final _sessionManager = SessionManager();
+  final width = Device.orientation == Orientation.landscape ? 70.w : 30.h;
+  //final height = Device.orientation == Orientation.landscape ? 50.h : 100.h;
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +33,9 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             Container(
               height: 250,
-              child: const HeaderWidget(250, true, Icons.login_outlined),
+              child:  HeaderWidget(200, true, Icons.login_outlined),
             ),
-            SafeArea(
-              child: Container(
-                  width: 300,
+            Container(
                   child: Column(
                     children: [
                       const Text(
@@ -47,34 +49,41 @@ class _LoginPageState extends State<LoginPage> {
                       Form(
                           key: _formKey,
                           child: Column(
+                            mainAxisSize: MainAxisSize.max,
                             children: [
-                              TextFormField(
-                                validator: (value) {
-                                  if (value!.isEmpty)
-                                    return 'Please enter your e-mail';
-                                  return null;
-                                },
-                                decoration: CustomDecoration.textFieldStyle(
-                                  labelText: ('E-mail'),
-                                  hintText: ('Enter your e-mail'),
-                                ),
-                                controller: _emailController,
-                                textInputAction: TextInputAction.next,
-                              ),
+                               Container(
+                                 width: width,
+                                 child: TextFormField(
+                                   validator: (value) {
+                                     if (value!.isEmpty)
+                                       return 'Please enter your e-mail';
+                                     return null;
+                                   },
+                                   decoration: CustomDecoration.textFieldStyle(
+                                     labelText: ('E-mail'),
+                                     hintText: ('Enter your e-mail'),
+                                   ),
+                                   controller: _emailController,
+                                   textInputAction: TextInputAction.next,
+                                 ),
+                               ),
                               SizedBox(height: 30.0),
-                              TextFormField(
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please enter your password';
-                                  }
-                                  return null;
-                                },
-                                obscureText: true,
-                                decoration: CustomDecoration.textFieldStyle(
-                                    labelText: ('Password'),
-                                    hintText: ('Enter your password')),
-                                textInputAction: TextInputAction.done,
-                                controller: _passwordController,
+                              Container(
+                                width: width,
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter your password';
+                                    }
+                                    return null;
+                                  },
+                                  obscureText: true,
+                                  decoration: CustomDecoration.textFieldStyle(
+                                      labelText: ('Password'),
+                                      hintText: ('Enter your password')),
+                                  textInputAction: TextInputAction.done,
+                                  controller: _passwordController,
+                                ),
                               ),
                             ],
                           )),
@@ -125,10 +134,10 @@ class _LoginPageState extends State<LoginPage> {
                                   }),
                           ]),
                         ),
-                      )
+                      ),
+                      SizedBox(height: 30.0),
                     ],
                   )),
-            ),
           ],
         ),
       ),
