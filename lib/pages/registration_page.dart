@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:week9/pages/widgets/header_widget.dart';
 import 'package:week9/shared_prefs/user.dart';
 import 'package:week9/shared_prefs/user_repository.dart';
@@ -24,6 +25,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final width = Device.orientation == Orientation.landscape ? 70.w : 40.h;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -51,6 +53,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                         SizedBox(height: 30),
                         Container(
+                          width: width,
                           decoration: CustomDecoration().myBoxDecoration(),
                           child: TextFormField(
                             textInputAction: TextInputAction.next,
@@ -64,6 +67,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           height: 30,
                         ),
                         Container(
+                          width: width,
                           decoration: CustomDecoration().myBoxDecoration(),
                           child: TextFormField(
                             textInputAction: TextInputAction.next,
@@ -74,6 +78,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                         SizedBox(height: 20.0),
                         Container(
+                          width: width,
                           decoration: CustomDecoration().myBoxDecoration(),
                           child: TextFormField(
                             textInputAction: TextInputAction.next,
@@ -95,6 +100,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                         SizedBox(height: 20.0),
                         Container(
+                          width: width,
                           decoration: CustomDecoration().myBoxDecoration(),
                           child: TextFormField(
                             textInputAction: TextInputAction.next,
@@ -115,6 +121,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                         SizedBox(height: 20.0),
                         Container(
+                          width: width,
                           decoration: CustomDecoration().myBoxDecoration(),
                           child: TextFormField(
                             textInputAction: TextInputAction.done,
@@ -140,6 +147,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             return Column(
                               children: <Widget>[
                                 Row(
+                                  mainAxisAlignment: Device.orientation == Orientation.landscape ? MainAxisAlignment.center: MainAxisAlignment.start,
                                   children: <Widget>[
                                     Checkbox(
                                         value: checkboxValue,
@@ -209,6 +217,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             },
                           ),
                         ),
+                        SizedBox(height: 20.0),
                       ],
                     ),
                   ),

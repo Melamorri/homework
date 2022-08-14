@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:week9/pages/widgets/header_widget.dart';
 import '../shared_prefs/session_manager.dart';
@@ -21,11 +20,10 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   final _userRepository = UserRepository();
   final _sessionManager = SessionManager();
-  final width = Device.orientation == Orientation.landscape ? 70.w : 30.h;
-  //final height = Device.orientation == Orientation.landscape ? 50.h : 100.h;
 
   @override
   Widget build(BuildContext context) {
+    final width = Device.orientation == Orientation.landscape ? 70.w : 30.h;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
