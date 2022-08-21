@@ -44,9 +44,7 @@ class _NotesMainPageState extends State<NotesMainPage> {
               children: <Widget>[
                 IconButton(
                     onPressed: () {
-                      for (var note in _notes) {
-                        _showUpdateDialog(note);
-                      }
+                        _showUpdateDialog(_notes[i]);
                     },
                     icon: const Icon(Icons.edit)),
                 IconButton(
