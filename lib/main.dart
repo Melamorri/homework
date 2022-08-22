@@ -1,3 +1,4 @@
+import 'package:database/primarySwatch.dart';
 import 'package:flutter/material.dart';
 
 import 'notes_main_page.dart';
@@ -13,7 +14,9 @@ class NotesApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        brightness: Brightness.dark,
+        primaryColor: Colors.blueGrey.shade900,
+        primarySwatch: primarySwatchColor
       ),
       home: const NotesMainPage(),
     );

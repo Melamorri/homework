@@ -1,3 +1,4 @@
+import 'package:database/primarySwatch.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'note.dart';
@@ -30,7 +31,7 @@ class _NotesMainPageState extends State<NotesMainPage> {
       appBar: AppBar(
         title: const Text('Notes'),
       ),
-      body: ListView.builder(
+      body: ListView.separated(
         itemCount: _notes.length,
         itemBuilder: (_, i) => ListTile(
             title: Text(
@@ -46,9 +47,9 @@ class _NotesMainPageState extends State<NotesMainPage> {
                     onPressed: () {
                         _showUpdateDialog(_notes[i]);
                     },
-                    icon: const Icon(Icons.edit)),
+                    icon: Icon(Icons.edit, color: primarySwatchColorAccent,)),
                 IconButton(
-                    icon: const Icon(Icons.delete),
+                    icon: Icon(Icons.delete, color: primarySwatchColorAccent,),
                     onPressed: () {
                       _notesRepo.deleteNote(_notes[i]);
                       setState(() {
@@ -56,9 +57,12 @@ class _NotesMainPageState extends State<NotesMainPage> {
                       });
                     })
               ],
-            )),
+            )), separatorBuilder: (BuildContext context, int index) {
+                  return const Divider(height: 1.0, color: Colors.black,);
+      },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: primarySwatchColor,
         onPressed: () => _showDialog(),
         child: const Icon(Icons.add),
       ),
@@ -142,10 +146,8 @@ class _NotesMainPageState extends State<NotesMainPage> {
               ),
               TextButton(
                 onPressed: () {
-                  _notes.map((note) {
                     final newNote = Note(name: nameController.text, description: descController.text);
                     _notesRepo.updateNote(note, newNote);
-                  }).toList();
                   setState(() {
                     _notes = _notesRepo.getNotes();
                     Navigator.pop(context);
