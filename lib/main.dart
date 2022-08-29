@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maps/start_page.dart';
 
 import 'map_page.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
-        'start': (_) => const StartPage(),
+        'start': (_) => const StartPage(latlng: LatLng(50.45, 30.52)),
         'map': (_) => const MapPage(),
       },
       initialRoute: 'start',

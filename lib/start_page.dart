@@ -3,9 +3,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '/location_repository.dart';
 
 class StartPage extends StatefulWidget {
-  const StartPage({Key? key, this.name, this.latlng}) : super(key: key);
+  const StartPage({Key? key, this.name, required this.latlng}) : super(key: key);
   final name;
-  final latlng;
+  final LatLng latlng;
 
   @override
   State<StartPage> createState() => _StartPageState();
