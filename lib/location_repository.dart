@@ -1,9 +1,9 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class Location {
+class MarkedLocation {
   final LatLng latLng;
 
-  Location(
-       this.latLng,
+  MarkedLocation(
+      this.latLng,
       );
 }

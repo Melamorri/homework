@@ -9,7 +9,7 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-  final locations = <Location>[];
+  final locations = <MarkedLocation>[];
   final name = '';
   @override
   Widget build(BuildContext context) {
@@ -20,13 +20,13 @@ class _StartPageState extends State<StartPage> {
       body: ListView.builder(
         itemCount: locations.length,
         itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          title: Text(locations[index].latLng.latitude.toString()),
-        );
-      },),
+          return ListTile(
+            title: Text(locations[index].latLng.latitude.toString()),
+          );
+        },),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final result = (await Navigator.pushNamed(context, 'map')) as Location;
+          final result = (await Navigator.pushNamed(context, 'map')) as MarkedLocation;
           locations.add(result);
           setState(() {});
         },

@@ -3,6 +3,7 @@ import 'package:location/location.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:maps/location_repository.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({Key? key}) : super(key: key);
@@ -37,7 +38,9 @@ class _MapPageState extends State<MapPage> {
     LocationData locationData = await location.getLocation();
     final initialMarker = Marker(markerId: const MarkerId('current_position'), infoWindow: const InfoWindow(title: "Current position"), icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed), position: LatLng(locationData.latitude!, locationData.longitude!));
     _mapController.moveCamera(CameraUpdate.newLatLng(LatLng(locationData.latitude!, locationData.longitude!)));
-    markers.add(initialMarker);
+    setState(() {
+      markers.add(initialMarker);
+    });
   }
 
   @override
@@ -79,7 +82,7 @@ class _MapPageState extends State<MapPage> {
           const SizedBox(height: 10,),
           FloatingActionButton(
             onPressed: () {
-              Navigator.pop(context, selectedMarker);
+              Navigator.pop(context, MarkedLocation(selectedMarker!));
             },
             child: const Text("Save"),
           ),
@@ -88,9 +91,9 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-   _onMapCreated(GoogleMapController mapController) async {
-     _mapController = mapController;
-     _controller.complete(mapController);
+  _onMapCreated(GoogleMapController mapController) async {
+    _mapController = mapController;
+    _controller.complete(mapController);
   }
   @override
   void dispose() {
@@ -100,8 +103,8 @@ class _MapPageState extends State<MapPage> {
   void _addMarker(LatLng position) async {
     selectedMarker = position;
     if (markers.isNotEmpty) {
-        markers.clear();
-        markers.add(Marker(markerId: const MarkerId("new_position"), infoWindow: const InfoWindow(title: "New Position"), icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed), position: position));
+      markers.clear();
+      markers.add(Marker(markerId: const MarkerId("new_position"), infoWindow: const InfoWindow(title: "New Position"), icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed), position: position));
     }
     setState(() {});
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maps/start_page.dart';
 
 import 'map_page.dart';
@@ -14,10 +13,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
       routes: {
         'start': (_) => const StartPage(),
         'map': (_) => const MapPage(),
@@ -26,4 +25,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
