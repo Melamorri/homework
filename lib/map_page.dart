@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maps/location_repository.dart';
+import 'package:maps/start_page.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({Key? key}) : super(key: key);
@@ -18,6 +19,8 @@ class _MapPageState extends State<MapPage> {
   final Completer<GoogleMapController> _controller = Completer();
   Set<Marker> markers = {};
   LatLng? selectedMarker;
+  String? name;
+  final locations = <MarkedLocation>[];
 
   _checkLocationPermission() async {
     bool locationServiceEnabled = await location.serviceEnabled();
@@ -82,7 +85,9 @@ class _MapPageState extends State<MapPage> {
           const SizedBox(height: 10,),
           FloatingActionButton(
             onPressed: () {
-              Navigator.pop(context, MarkedLocation(selectedMarker!));
+              _showRenameDialog();
+              setState(() {
+              });
             },
             child: const Text("Save"),
           ),
@@ -108,5 +113,42 @@ class _MapPageState extends State<MapPage> {
     }
     setState(() {});
   }
+
+  Future _showRenameDialog () => showGeneralDialog(
+    context: context,
+    barrierDismissible: false,
+    pageBuilder: (_, __, ___) {
+      final nameController = TextEditingController();
+      return AlertDialog(
+        title: const Text('Location name'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(hintText: 'Name'),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context);
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              name = nameController.text;
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => StartPage(name: name!, latlng: selectedMarker!,)));
+              setState(() {});
+            },
+            child: const Text('Add'),
+          )
+        ],
+      );
+    },
+  );
 
 }

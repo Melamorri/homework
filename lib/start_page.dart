@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '/location_repository.dart';
 
 class StartPage extends StatefulWidget {
-  const StartPage({Key? key}) : super(key: key);
+  const StartPage({Key? key, this.name, this.latlng}) : super(key: key);
+  final name;
+  final latlng;
 
   @override
   State<StartPage> createState() => _StartPageState();
@@ -10,9 +13,9 @@ class StartPage extends StatefulWidget {
 
 class _StartPageState extends State<StartPage> {
   final locations = <MarkedLocation>[];
-  final name = '';
   @override
   Widget build(BuildContext context) {
+    //var title = ModalRoute.of(context)?.settings.arguments as MarkedLocation?;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Saved locations'),
@@ -21,8 +24,8 @@ class _StartPageState extends State<StartPage> {
         itemCount: locations.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            title: Text(locations[index].latLng.latitude.toString()),
-          );
+            title: Text(widget.name));
+            //subtitle: Text(widget.latlng.toString()));
         },),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
