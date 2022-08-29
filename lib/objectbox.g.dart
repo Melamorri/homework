@@ -21,7 +21,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 5823122466183977857),
       name: 'MarkedLocation',
-      lastPropertyId: const IdUid(2, 3903830605997039658),
+      lastPropertyId: const IdUid(4, 2835788323968200648),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -33,6 +33,16 @@ final _entities = <ModelEntity>[
             id: const IdUid(2, 3903830605997039658),
             name: 'name',
             type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 8925844052331238454),
+            name: 'longitude',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 2835788323968200648),
+            name: 'latitude',
+            type: 8,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -82,9 +92,11 @@ ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (MarkedLocation object, fb.Builder fbb) {
           final nameOffset = fbb.writeString(object.name);
-          fbb.startTable(3);
+          fbb.startTable(5);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
+          fbb.addFloat64(2, object.longitude);
+          fbb.addFloat64(3, object.latitude);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -95,7 +107,11 @@ ModelDefinition getObjectBoxModel() {
           final object = MarkedLocation(
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
               name: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 6, ''));
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              longitude:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0),
+              latitude: const fb.Float64Reader()
+                  .vTableGet(buffer, rootOffset, 10, 0));
 
           return object;
         })
@@ -113,4 +129,12 @@ class MarkedLocation_ {
   /// see [MarkedLocation.name]
   static final name =
       QueryStringProperty<MarkedLocation>(_entities[0].properties[1]);
+
+  /// see [MarkedLocation.longitude]
+  static final longitude =
+      QueryDoubleProperty<MarkedLocation>(_entities[0].properties[2]);
+
+  /// see [MarkedLocation.latitude]
+  static final latitude =
+      QueryDoubleProperty<MarkedLocation>(_entities[0].properties[3]);
 }

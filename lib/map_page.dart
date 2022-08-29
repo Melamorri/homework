@@ -154,10 +154,8 @@ class _MapPageState extends State<MapPage> {
               TextButton(
                 onPressed: () async {
                   name = nameController.text;
-                  final newLocation = MarkedLocation(name: name!, latLng: selectedMarker!);
-                  await _locationsRepo.addLocation(newLocation);
+                  final newLocation = MarkedLocation(name: name!, latitude: selectedMarker!.latitude, longitude: selectedMarker!.longitude);
                   setState(() {
-                    locations = _locationsRepo.getLocations();
                     Navigator.pop(context);
                     Navigator.pop(context, newLocation);
                   });

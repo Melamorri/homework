@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:5823122466183977857",
-      "lastPropertyId": "2:3903830605997039658",
+      "lastPropertyId": "4:2835788323968200648",
       "name": "MarkedLocation",
       "properties": [
         {
@@ -18,6 +18,16 @@
           "id": "2:3903830605997039658",
           "name": "name",
           "type": 9
+        },
+        {
+          "id": "3:8925844052331238454",
+          "name": "longitude",
+          "type": 8
+        },
+        {
+          "id": "4:2835788323968200648",
+          "name": "latitude",
+          "type": 8
         }
       ],
       "relations": []

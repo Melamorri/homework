@@ -27,6 +27,7 @@ class _StartPageState extends State<StartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey.shade100,
       appBar: AppBar(
         title: const Text('Saved locations'),
       ),
@@ -35,7 +36,7 @@ class _StartPageState extends State<StartPage> {
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
             title: Text(locations[index].name),
-            subtitle: Text('${locations[index].latLng.latitude}, ${locations[index].latLng.longitude}'),
+            subtitle: Text('${locations[index].latitude}, ${locations[index].longitude}'),
           trailing: IconButton(
               icon: const Icon(Icons.delete,),
               onPressed: () {
@@ -49,8 +50,10 @@ class _StartPageState extends State<StartPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final result = (await Navigator.pushNamed(context, 'map')) as MarkedLocation;
-          locations.add(result);
-          setState(() {});
+          _locationsRepo.addLocation(result);
+          setState(() {
+            locations = _locationsRepo.getLocations();
+          });
         },
         child: const Icon(
           Icons.add,

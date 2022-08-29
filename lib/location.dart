@@ -5,11 +5,13 @@ import 'package:objectbox/objectbox.dart';
 class MarkedLocation {
   @Id()
   int id;
-  LatLng latLng;
   String name;
+  double longitude;
+  double latitude;
   MarkedLocation({
     this.id = 0,
-    this.latLng = const LatLng(10.0, 10.0),
-    required this.name,}
-      );
+    required this.name,
+    required this.longitude,
+    required this.latitude,
+  });
 }
