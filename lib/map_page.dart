@@ -3,6 +3,7 @@ import 'package:location/location.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:maps/location.dart';
 import 'package:maps/location_repository.dart';
 import 'package:maps/start_page.dart';
 
@@ -20,7 +21,8 @@ class _MapPageState extends State<MapPage> {
   Set<Marker> markers = {};
   LatLng? selectedMarker;
   String? name;
-  final locations = <MarkedLocation>[];
+  late var locations = <MarkedLocation>[];
+  final _locationsRepo = LocationsRepository();
 
   _checkLocationPermission() async {
     bool locationServiceEnabled = await location.serviceEnabled();
@@ -39,8 +41,13 @@ class _MapPageState extends State<MapPage> {
       }
     }
     LocationData locationData = await location.getLocation();
-    final initialMarker = Marker(markerId: const MarkerId('current_position'), infoWindow: const InfoWindow(title: "Current position"), icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed), position: LatLng(locationData.latitude!, locationData.longitude!));
-    _mapController.moveCamera(CameraUpdate.newLatLng(LatLng(locationData.latitude!, locationData.longitude!)));
+    final initialMarker = Marker(
+        markerId: const MarkerId('current_position'),
+        infoWindow: const InfoWindow(title: "Current position"),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta),
+        position: LatLng(locationData.latitude!, locationData.longitude!));
+    _mapController.moveCamera(CameraUpdate.newLatLng(
+        LatLng(locationData.latitude!, locationData.longitude!)));
     setState(() {
       markers.add(initialMarker);
     });
@@ -82,12 +89,13 @@ class _MapPageState extends State<MapPage> {
             },
             child: const Text("Сброс"),
           ),
-          const SizedBox(height: 10,),
+          const SizedBox(
+            height: 10,
+          ),
           FloatingActionButton(
             onPressed: () {
               _showRenameDialog();
-              setState(() {
-              });
+              setState(() {});
             },
             child: const Text("Save"),
           ),
@@ -100,55 +108,65 @@ class _MapPageState extends State<MapPage> {
     _mapController = mapController;
     _controller.complete(mapController);
   }
+
   @override
   void dispose() {
     _mapController.dispose();
     super.dispose();
   }
+
   void _addMarker(LatLng position) async {
     selectedMarker = position;
     if (markers.isNotEmpty) {
       markers.clear();
-      markers.add(Marker(markerId: const MarkerId("new_position"), infoWindow: const InfoWindow(title: "New Position"), icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed), position: position));
+      markers.add(Marker(
+          markerId: const MarkerId("new_position"),
+          infoWindow: const InfoWindow(title: "New Position"),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta),
+          position: position));
     }
     setState(() {});
   }
 
-  Future _showRenameDialog () => showGeneralDialog(
-    context: context,
-    barrierDismissible: false,
-    pageBuilder: (_, __, ___) {
-      final nameController = TextEditingController();
-      return AlertDialog(
-        title: const Text('Location name'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: nameController,
-              decoration: const InputDecoration(hintText: 'Name'),
+  Future _showRenameDialog() => showGeneralDialog(
+        context: context,
+        barrierDismissible: false,
+        pageBuilder: (_, __, ___) {
+          final nameController = TextEditingController();
+          return AlertDialog(
+            title: const Text('Location name'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(hintText: 'Name'),
+                ),
+              ],
             ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () async {
-              Navigator.pop(context);
-            },
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              name = nameController.text;
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => StartPage(name: name!, latlng: selectedMarker!,)));
-              setState(() {});
-            },
-            child: const Text('Add'),
-          )
-        ],
-      );
-    },
-  );
+            actions: [
+              TextButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  name = nameController.text;
+                  final newLocation = MarkedLocation(name: name!, latLng: selectedMarker!);
+                  await _locationsRepo.addLocation(newLocation);
+                  setState(() {
+                    locations = _locationsRepo.getLocations();
+                    Navigator.pop(context);
+                    Navigator.pop(context, newLocation);
+                  });
 
+                },
+                child: const Text('Add'),
+              )
+            ],
+          );
+        },
+      );
 }
