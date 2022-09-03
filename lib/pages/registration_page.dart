@@ -18,7 +18,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _passwordAgainController = TextEditingController();
-  final firstNameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool checkedValue = false;
   bool checkboxValue = false;
@@ -58,26 +57,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           decoration: CustomDecoration().myBoxDecoration(),
                           child: TextFormField(
                             textInputAction: TextInputAction.next,
-                            controller: firstNameController,
                             decoration: CustomDecoration.textFieldStyle(
-                                labelText: 'First Name',
-                                hintText: 'Enter your first name'),
+                                labelText: 'Username',
+                                hintText: 'Enter username'),
                             onChanged: (value) {
-                              _username = value;
+                             setState(() {
+                               _username = value;
+                             });
                             },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Container(
-                          width: width,
-                          decoration: CustomDecoration().myBoxDecoration(),
-                          child: TextFormField(
-                            textInputAction: TextInputAction.next,
-                            decoration: CustomDecoration.textFieldStyle(
-                                labelText: 'Last Name',
-                                hintText: 'Enter your last name'),
                           ),
                         ),
                         SizedBox(height: 20.0),
@@ -97,27 +84,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               }
                               if (!value.contains("@")) {
                                 return 'Invalid email address';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        SizedBox(height: 20.0),
-                        Container(
-                          width: width,
-                          decoration: CustomDecoration().myBoxDecoration(),
-                          child: TextFormField(
-                            textInputAction: TextInputAction.next,
-                            decoration: CustomDecoration.textFieldStyle(
-                                labelText: "Mobile Number",
-                                hintText: "Enter your mobile number"),
-                            keyboardType: TextInputType.phone,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "Enter your phone number";
-                              }
-                              if (value.length < 10) {
-                                return "Your phone number must have a minimum of ten characters";
                               }
                               return null;
                             },
