@@ -224,12 +224,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               ),
                             ),
                             onPressed: () async {
-                              var name = firstNameController.text;
                               final email = _emailController.text;
                               final password = _passwordController.text;
                               final passwordAgain = _passwordAgainController.text;
                               if (password == passwordAgain) {
-                                final success = await FirebaseHelper.signUp(context, email, password, name);
+                                final success = await FirebaseHelper.signUp(context, email, password, _username);
                                 if (success) {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => GreetingPage()));
