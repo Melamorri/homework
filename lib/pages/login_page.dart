@@ -17,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  User? user;
 
   @override
   Widget build(BuildContext context) {
@@ -90,9 +91,9 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () async {
                             final email = _emailController.text;
                             final password = _passwordController.text;
-                            final success = await FirebaseHelper.login(email, password);
+                            final success = await FirebaseHelper.login(context, email, password);
                             if (success) {
-                              Navigator.pushReplacementNamed(context, '/profile');
+                              Navigator.pushReplacementNamed(context, '/greeting');
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -135,23 +136,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-  static Future<bool> login(String email, String password) async {
-    try {
-      final user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-      return true;
-    } on FirebaseAuthException catch (e) {
-      print(e.toString());
-      // Код ошибка для случая, если пользователь не найден
-      if (e.code == 'user-not-found') {
-        print("Unknown user");
-        // Код ошибка для случая, если пользователь ввёл неверный пароль
-      } else if (e.code == 'wrong-password') {
-        print("Wrong password");
-      }
-    } catch(e) {
-      print("Unknown error");
-    }
-    return false;
   }
 }

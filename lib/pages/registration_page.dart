@@ -22,6 +22,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final _formKey = GlobalKey<FormState>();
   bool checkedValue = false;
   bool checkboxValue = false;
+  late String _username;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +62,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             decoration: CustomDecoration.textFieldStyle(
                                 labelText: 'First Name',
                                 hintText: 'Enter your first name'),
+                            onChanged: (value) {
+                              _username = value;
+                            },
                           ),
                         ),
                         SizedBox(
@@ -220,14 +224,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               ),
                             ),
                             onPressed: () async {
-                              final name = firstNameController.text;
+                              var name = firstNameController.text;
                               final email = _emailController.text;
                               final password = _passwordController.text;
-                              final passwordAgain = _passwordAgainController
-                                  .text;
+                              final passwordAgain = _passwordAgainController.text;
                               if (password == passwordAgain) {
-                                final success = await FirebaseHelper.signUp(
-                                    email, password);
+                                final success = await FirebaseHelper.signUp(context, email, password, name);
                                 if (success) {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => GreetingPage()));
@@ -247,6 +249,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   ),
                                 );
                               }
+                              setState(() {
+
+                              });
                             }),
                         ),
                         SizedBox(height: 20.0),
@@ -266,27 +271,5 @@ class _RegistrationPageState extends State<RegistrationPage> {
             Navigator.pushNamed(context, '/login');
           }),
     );
-  }
-
-
-  static Future<bool> signUp(String email, String password) async {
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      return true;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      } else if (e.code == 'invalid-email') {
-        print('Invalid email address.');
-      }
-    } catch (e) {
-      print(e);
-    }
-    return false;
   }
 }
