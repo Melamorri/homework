@@ -8,10 +8,10 @@ class CustomDecoration {
         contentPadding: EdgeInsets.all(10),
         focusedBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(20)),
-          borderSide: BorderSide(color: Colors.blueGrey),
+          borderSide: BorderSide(),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.cyan.shade700),
+          borderSide: BorderSide(),
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
         errorBorder: OutlineInputBorder(

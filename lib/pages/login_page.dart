@@ -91,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () async {
                             final email = _emailController.text;
                             final password = _passwordController.text;
-                            final success = await FirebaseHelper.login(context, email, password);
+                            final success = await FirebaseHelper.login(email, password);
                             if (success) {
                               Navigator.pushReplacementNamed(context, '/greeting');
                             } else {
@@ -103,16 +103,16 @@ class _LoginPageState extends State<LoginPage> {
                               );
                             }
                           },
-                          child: const Padding(
+                          child: Padding(
                             padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
                             child: Text(
-                              'Sign In',
-                              style: TextStyle(letterSpacing: 1),
+                              'Sign In'.toUpperCase(),
+                              style: TextStyle(letterSpacing: 1, color: Colors.white),
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30.0,
                       ),
                       Container(
@@ -121,10 +121,27 @@ class _LoginPageState extends State<LoginPage> {
                             TextSpan(text: "Don't have an account? "),
                             TextSpan(
                                 text: 'Sign Up',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(fontWeight: FontWeight.bold,),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     Navigator.pushNamed(context, '/sign_up');
+                                  }),
+                          ]),
+                        ),
+                      ),
+                      const SizedBox(height: 10,),
+                      Container(
+                        child: Text.rich(
+                          TextSpan(children: [
+                            TextSpan(text: "Forgot password? "),
+                            TextSpan(
+                                text: 'Reset',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    FirebaseHelper.resetPassword(_emailController.text);
+                                    _showDialog();
+
                                   }),
                           ]),
                         ),
@@ -137,4 +154,36 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+  Future _showDialog() => showGeneralDialog(
+    context: context,
+    barrierDismissible: false,
+    transitionBuilder: (context, a1, a2, widget) {
+      return Transform.scale(
+        scale: a1.value,
+        child: Opacity(
+            opacity: a1.value,
+            child: AlertDialog(
+              shape: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16.0)),
+              content: const Padding(
+                child: Text('We have sent the instructions to your email'),
+                padding: EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0)
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Ok'),
+                )
+              ],
+            )),
+      );
+    },
+    transitionDuration: Duration(milliseconds: 200),
+    pageBuilder: (BuildContext context, Animation<double> animation,
+        Animation<double> secondaryAnimation) {
+      return Text('data');
+    },
+  );
 }

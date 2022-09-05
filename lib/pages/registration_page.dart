@@ -194,10 +194,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               final password = _passwordController.text;
                               final passwordAgain = _passwordAgainController.text;
                               if (password == passwordAgain) {
-                                final success = await FirebaseHelper.signUp(context, email, password, _username);
+                                final success = await FirebaseHelper.signUp(email, password, _username);
                                 if (success) {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => GreetingPage()));
+                                  Navigator.pushReplacementNamed(context, '/greeting');
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(

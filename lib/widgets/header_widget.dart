@@ -31,9 +31,9 @@ class _HeaderWidgetState extends State<HeaderWidget> {
           clipper: ShapeClipper(
               [
                 Offset(width / 5, _height),
-                Offset(width / 10 * 5, _height - 60),
+                Offset(width / 10 * 5, _height - 30),
                 Offset(width / 5 * 4, _height + 20),
-                Offset(width, _height - 18)
+                Offset(width, _height - 38)
               ]
           ),
           child: Container(
@@ -54,7 +54,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
         ClipPath(
           clipper: ShapeClipper(
               [
-                Offset(width / 3, _height + 20),
+                Offset(width / 2, _height + 30),
                 Offset(width / 10 * 8, _height - 60),
                 Offset(width / 5 * 4, _height - 60),
                 Offset(width, _height - 20)
@@ -78,7 +78,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
         ClipPath(
           clipper: ShapeClipper(
               [
-                Offset(width / 5, _height),
+                Offset(width / 4, _height),
                 Offset(width / 2, _height - 40),
                 Offset(width / 5 * 4, _height - 80),
                 Offset(width, _height - 20)

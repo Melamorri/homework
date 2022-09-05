@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class FirebaseHelper {
-  static Future<bool> login(BuildContext context, String email, String password) async {
+  static Future<bool> login(String email, String password) async {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
@@ -20,13 +20,12 @@ class FirebaseHelper {
     return false;
   }
 
-  static Future<bool> signUp(BuildContext context, String email, String password, String username) async {
-
+  static Future<bool> signUp(
+      String email, String password, String username) async {
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      final user = FirebaseAuth.instance.currentUser;
-      user?.updateDisplayName(username);
+      await FirebaseAuth.instance.currentUser?.updateDisplayName(username);
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -44,5 +43,43 @@ class FirebaseHelper {
 
   static Future<void> logout() async {
     await FirebaseAuth.instance.signOut();
+  }
+
+  static Future resetPassword(String email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'auth/invalid-email') {
+        print('Invalid email');
+      }
+      print(e);
+    }
+  }
+
+  static Future<void> write (String note) async {
+    final id = FirebaseAuth.instance.currentUser?.uid;
+    if (id == null) return;
+    final ref = FirebaseDatabase.instance.ref("notes/$id");
+    await ref.push().set(note);
+  }
+
+  static Stream<DatabaseEvent> getNotes() {
+    final id = FirebaseAuth.instance.currentUser?.uid;
+    if (id == null) return const Stream.empty();
+    final ref = FirebaseDatabase.instance.ref("notes/$id");
+    return ref.onValue;
+  }
+  static void removeNote(int noteIdx) async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    final notes = await FirebaseDatabase.instance.ref("notes/$userId").get();
+    final note = notes.children.elementAt(noteIdx);
+    note.ref.remove();
+  }
+  static Future<void> updateNote(int noteIdx, String newNote) async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    final notes = await FirebaseDatabase.instance.ref("notes/$userId").get();
+    final note = notes.children.elementAt(noteIdx);
+        note.ref.remove();
+        note.ref.set(newNote);
   }
 }
