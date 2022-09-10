@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../firebase_helper.dart';
+import '../stripe_helper.dart';
 import '../widgets/header_widget.dart';
 
 class GreetingPage extends StatefulWidget {
@@ -14,6 +15,7 @@ class _GreetingPageState extends State<GreetingPage> {
   User? user;
   var notes = <String>[];
   final nameController = TextEditingController();
+  var proMode = false;
 
   String greetingMessage(String? name) {
     var timeNow = DateTime.now().hour;
@@ -54,32 +56,7 @@ class _GreetingPageState extends State<GreetingPage> {
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold),
             ),
-            Expanded(
-              child: ListView.separated(
-                  itemBuilder: (_, i) => ListTile(
-                      title: Text(notes[i]),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          IconButton(
-                              onPressed: () async {
-                                _showDialog('Edit note','New name', (newText) {
-                                  FirebaseHelper.updateNote(i, newText);
-                                }, 'Edit');
-                              },
-                              icon: const Icon(Icons.edit)),
-                          IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () async {
-                                FirebaseHelper.removeNote(i);
-                              })
-                        ],
-                      )),
-                  separatorBuilder: (context, index) => Divider(
-                        color: Colors.blueGrey.shade900,
-                      ),
-                  itemCount: notes.length),
-            ),
+            if (proMode) ..._notes() else _payment(),
           ]),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -171,4 +148,58 @@ class _GreetingPageState extends State<GreetingPage> {
       FirebaseHelper.write(newNote);
     };
   }*/
+
+ List <Widget> _notes() => [
+    Expanded(
+      child: ListView.separated(
+          itemBuilder: (_, i) => ListTile(
+              title: Text(notes[i]),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  IconButton(
+                      onPressed: () async {
+                        _showDialog('Edit note','New name', (newText) {
+                          FirebaseHelper.updateNote(i, newText);
+                        }, 'Edit');
+                      },
+                      icon: const Icon(Icons.edit)),
+                  IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () async {
+                        FirebaseHelper.removeNote(i);
+                      })
+                ],
+              )),
+          separatorBuilder: (context, index) => Divider(
+            color: Colors.blueGrey.shade900,
+          ),
+          itemCount: notes.length),
+    ),
+  ];
+
+  Widget _payment() {
+    return ElevatedButton(
+      onPressed: () {
+        StripeHelper.initPaymentSheet(
+            email: FirebaseAuth.instance.currentUser?.email ?? 'cr.olich@gmail.com',
+            amount: 500,
+            onSuccess: () async {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Payment completed!')),
+              );
+              await FirebaseHelper.enableProMode();
+              setState(() {
+                proMode = true;
+              });
+            },
+            onError: (error) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(error)),
+              );
+            });
+      },
+      child: const Text('Subscription'),
+    );
+  }
 }

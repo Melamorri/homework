@@ -82,4 +82,18 @@ class FirebaseHelper {
         note.ref.remove();
         note.ref.set(newNote);
   }
+  static Future<bool> isProMode() async {
+    final id = FirebaseAuth.instance.currentUser?.uid;
+    if (id == null) return false;
+    final ref = FirebaseDatabase.instance.ref("subscriptions/$id/enable");
+    final snapshot = await ref.get();
+    return snapshot.value as bool? ?? false;
+  }
+
+  static Future enableProMode() async {
+    final id = FirebaseAuth.instance.currentUser?.uid;
+    if (id == null) return false;
+    final ref = FirebaseDatabase.instance.ref("subscriptions/$id/enable");
+    await ref.set(true);
+  }
 }
