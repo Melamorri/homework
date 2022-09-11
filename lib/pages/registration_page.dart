@@ -183,6 +183,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               child: Text(
                                 "Sign Up".toUpperCase(),
                                 style: const TextStyle(
+                                  letterSpacing: 1,
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,

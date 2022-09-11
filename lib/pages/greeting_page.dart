@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../custom_style.dart';
 import '../firebase_helper.dart';
 import '../stripe_helper.dart';
 import '../widgets/header_widget.dart';
@@ -93,7 +94,9 @@ class _GreetingPageState extends State<GreetingPage> {
     });
   }
 
-  Future _showDialog(String title, String name, void Function(String) onPressed, String buttonName) => showGeneralDialog(
+  Future _showDialog(String title, String name, void Function(String) onPressed,
+          String buttonName) =>
+      showGeneralDialog(
         context: context,
         barrierDismissible: false,
         transitionBuilder: (context, a1, a2, widget) {
@@ -139,9 +142,11 @@ class _GreetingPageState extends State<GreetingPage> {
           return Text('data');
         },
       );
+
   onPressedWrite(String note) {
     FirebaseHelper.write(note);
   }
+
   /*void Function(String) onPressedUpdate(int oldNoteIdx) {
     return (newNote) {
       FirebaseHelper.removeNote(oldNoteIdx);
@@ -149,57 +154,70 @@ class _GreetingPageState extends State<GreetingPage> {
     };
   }*/
 
- List <Widget> _notes() => [
-    Expanded(
-      child: ListView.separated(
-          itemBuilder: (_, i) => ListTile(
-              title: Text(notes[i]),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  IconButton(
-                      onPressed: () async {
-                        _showDialog('Edit note','New name', (newText) {
-                          FirebaseHelper.updateNote(i, newText);
-                        }, 'Edit');
-                      },
-                      icon: const Icon(Icons.edit)),
-                  IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () async {
-                        FirebaseHelper.removeNote(i);
-                      })
-                ],
-              )),
-          separatorBuilder: (context, index) => Divider(
-            color: Colors.blueGrey.shade900,
-          ),
-          itemCount: notes.length),
-    ),
-  ];
+  List<Widget> _notes() => [
+        Expanded(
+          child: ListView.separated(
+              itemBuilder: (_, i) => ListTile(
+                  title: Text(notes[i]),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      IconButton(
+                          onPressed: () async {
+                            _showDialog('Edit note', 'New name', (newText) {
+                              FirebaseHelper.updateNote(i, newText);
+                            }, 'Edit');
+                          },
+                          icon: const Icon(Icons.edit)),
+                      IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () async {
+                            FirebaseHelper.removeNote(i);
+                          })
+                    ],
+                  )),
+              separatorBuilder: (context, index) => Divider(
+                    color: Colors.blueGrey.shade900,
+                  ),
+              itemCount: notes.length),
+        ),
+      ];
 
   Widget _payment() {
-    return ElevatedButton(
-      onPressed: () {
-        StripeHelper.initPaymentSheet(
-            email: FirebaseAuth.instance.currentUser?.email ?? 'cr.olich@gmail.com',
-            amount: 500,
-            onSuccess: () async {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Payment completed!')),
-              );
-              await FirebaseHelper.enableProMode();
-              setState(() {
-                proMode = true;
-              });
-            },
-            onError: (error) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(error)),
-              );
-            });
-      },
-      child: const Text('Subscription'),
-    );
+    return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+        child: Column(
+          children: [
+            const Text('To obtain access to Notes please subscribe', style: TextStyle(fontSize: 16),),
+            const SizedBox(height: 15,),
+            Container(
+              decoration: CustomDecoration.buttonDecoration(context),
+              child: ElevatedButton(
+                style: CustomDecoration().buttonStyle(),
+                onPressed: () {
+                  StripeHelper.initPaymentSheet(
+                      email: FirebaseAuth.instance.currentUser?.email ??
+                          'cr.olich@gmail.com',
+                      amount: 500,
+                      onSuccess: () async {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Payment completed!')),
+                        );
+                        await FirebaseHelper.enableProMode();
+                        setState(() {
+                          proMode = true;
+                        });
+                      },
+                      onError: (error) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(error)),
+                        );
+                      });
+                },
+                child:  Text('Subscribe'.toUpperCase(), style: TextStyle(letterSpacing: 1, color: Colors.white),),
+              )
+            ),
+          ],
+        ));
   }
 }
