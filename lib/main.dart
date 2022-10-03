@@ -1,14 +1,14 @@
 import 'dart:async';
-import 'package:firebase/pages/greeting_page.dart';
-import 'package:firebase/pages/login_page.dart';
-import 'package:firebase/pages/registration_page.dart';
+import 'package:firebase/ui/pages/login_page.dart';
+import 'package:firebase/ui/pages/notes_page/notes_page.dart';
+import 'package:firebase/ui/pages/registration_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:material_color_generator/material_color_generator.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'firebase_options.dart';
+import 'firebase/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,9 +57,9 @@ class _MyAppState extends State<MyApp> {
         ),
         initialRoute: FirebaseAuth.instance.currentUser == null ? '/login' : '/greeting',
         routes: {
-          '/login': (_) => LoginPage(),
-          '/sign_up': (_) => RegistrationPage(),
-          '/greeting': (_) => GreetingPage(),
+          '/login': (_) => const LoginPage(),
+          '/sign_up': (_) => const RegistrationPage(),
+          '/greeting': (_) => const NotesPage(),
         },
       );
     },);
