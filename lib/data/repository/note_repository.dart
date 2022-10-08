@@ -1,7 +1,9 @@
 import 'package:firebase/domain/model/note_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:injectable/injectable.dart';
 
+@singleton
 class NoteRepository {
   Stream<List<NoteModel>> getUserNotesStream(String userId) async* {
     final ref = FirebaseDatabase.instance.ref("notes/$userId");

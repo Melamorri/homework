@@ -1,3 +1,4 @@
+import 'package:firebase/di/config.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -21,7 +22,7 @@ class _NotesPageState extends State<NotesPage> {
   var notes = <NoteModel>[];
   final nameController = TextEditingController();
   var proMode = false;
-  late final NotesStore _viewModel;
+  var _viewModel = getIt<NotesStore>();
 
   @override
   void initState() {

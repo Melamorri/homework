@@ -1,9 +1,11 @@
 import 'package:firebase/domain/model/note_model.dart';
+import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 import '../../../domain/interactor/note_interactor.dart';
 
 part 'notes_page_store.g.dart';
 
+@injectable
 class NotesStore = _NotesStore with _$NotesStore;
 
 abstract class _NotesStore with Store {

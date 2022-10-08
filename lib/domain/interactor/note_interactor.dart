@@ -1,6 +1,8 @@
+import 'package:injectable/injectable.dart';
 import '../../data/repository/note_repository.dart';
 import '../model/note_model.dart';
 
+@injectable
 class NoteInteractor {
   final NoteRepository _repository = NoteRepository();
 

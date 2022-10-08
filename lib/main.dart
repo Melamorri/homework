@@ -8,9 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:material_color_generator/material_color_generator.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'di/config.dart';
 import 'firebase/firebase_options.dart';
 
 void main() async {
+  configureDependencies();
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = "pk_test_51Lej2tKIHorZMKMijHsySdKFp800ESygUGrDTPOSWEJ7woz5RqKxNcUNxBUOsEXuNsPv6qUMQqGc0h8oeBwg9wL100pgmuTqtp";
   await Stripe.instance.applySettings();

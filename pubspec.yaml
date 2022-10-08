@@ -31,6 +31,8 @@ dependencies:
     sdk: flutter
   flutter_stripe: ^4.0.0
   http: ^0.13.5
+  injectable: ^1.5.3
+  get_it: ^7.2.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -50,6 +52,7 @@ dev_dependencies:
     sdk: flutter
   mobx_codegen: 2.0.7+3
   build_runner: 2.2.1
+  injectable_generator: ^1.5.4
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
