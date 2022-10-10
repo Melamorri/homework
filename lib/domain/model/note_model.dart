@@ -1,5 +1,5 @@
 class NoteModel {
-  final String userId;
+  final String? userId;
   final String text;
   final String id;
 

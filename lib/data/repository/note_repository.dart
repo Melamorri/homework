@@ -5,7 +5,8 @@ import 'package:injectable/injectable.dart';
 
 @singleton
 class NoteRepository {
-  Stream<List<NoteModel>> getUserNotesStream(String userId) async* {
+  Stream<List<NoteModel>> getUserNotesStream() async* {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
     final ref = FirebaseDatabase.instance.ref("notes/$userId");
     await for (final event in ref.onValue) {
       final map = event.snapshot.value as Map<dynamic, dynamic>?;

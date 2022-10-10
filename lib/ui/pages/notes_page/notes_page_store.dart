@@ -28,7 +28,7 @@ abstract class _NotesStore with Store {
   Future updateNote(NoteModel note, NoteModel newNote) =>
       _notesInteractor.updateNote(note, newNote);
 
-  _NotesStore(String userId) {
-    _notesInteractor = NoteInteractor(userId: userId);
+  _NotesStore() {
+    _notesInteractor = NoteInteractor();
   }
 }

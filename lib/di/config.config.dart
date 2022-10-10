@@ -25,9 +25,8 @@ _i1.GetIt $initGetIt(
     environment,
     environmentFilter,
   );
-  gh.factory<_i3.NoteInteractor>(
-      () => _i3.NoteInteractor(userId: get<String>()));
+  gh.factory<_i3.NoteInteractor>(() => _i3.NoteInteractor());
   gh.singleton<_i4.NoteRepository>(_i4.NoteRepository());
-  gh.factory<_i5.NotesStore>(() => _i5.NotesStore(get<String>()));
+  gh.factory<_i5.NotesStore>(() => _i5.NotesStore());
   return get;
 }

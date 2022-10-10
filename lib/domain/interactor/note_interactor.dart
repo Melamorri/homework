@@ -7,7 +7,7 @@ class NoteInteractor {
   final NoteRepository _repository = NoteRepository();
 
   Stream<List<NoteModel>> get streamNotes =>
-      _repository.getUserNotesStream(userId);
+      _repository.getUserNotesStream();
 
   Future addNote(NoteModel note) => _repository.create(note);
 
@@ -15,10 +15,4 @@ class NoteInteractor {
 
   Future updateNote(NoteModel note, NoteModel newNote) =>
       _repository.update(note, newNote);
-
-  final String userId;
-
-  NoteInteractor({
-    required this.userId,
-  });
 }

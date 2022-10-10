@@ -94,7 +94,7 @@ class _NotesPageState extends State<NotesPage> {
     if (userId == null) {
       return;
     }
-    _viewModel = NotesStore(userId);
+    _viewModel = NotesStore();
     _viewModel.getData();
   }
 
